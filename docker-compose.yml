@@ -39,6 +39,8 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
     volumes:
       - ./postgresql_data:/var/lib/postgresql/data
 
@@ -234,17 +236,24 @@ services:
       KAFKA_CLUSTERS_0_NAME: kafkacluster
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'broker:29092,localhost:29092,localhost:9092,broker:9092'
 
-  splunk:
+  splunk-local:
+    container_name: splunk-local
     image: splunk/splunk:latest
+    restart: on-failure
     environment:
       SPLUNK_START_ARGS: --accept-license
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+      SPLUNK_USER: root
       SPLUNK_PASSWORD: Admin@1956
-    ports:
-      - "8000:8000"
-      - "8089:8089"
     volumes:
-      - ./splunk_etc:/opt/splunk/etc
-      - ./splunk_var:/opt/splunk/var
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8089:8089"
+      - "9997:9997"
+      - "8000:8000"
+      - "1514:1514"
 
   grafana:
     container_name: grafana
@@ -312,8 +321,6 @@ services:
 
 volumes:
   redis_data:
-  splunk_etc:
-  splunk_var:
   mysql:
   grafana_data:
   sonarqube_conf:
@@ -324,3 +331,5 @@ volumes:
   postgresql_data:
   jupyter:
   spark_data:
+  opt-splunk-etc:
+  opt-splunk-var:
