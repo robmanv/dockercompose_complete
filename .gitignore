@@ -1,0 +1,9 @@
+/grafana_data
+/jupyter
+/localstack
+/mysql
+/postgresql_data
+/redis_data
+/spark_data
+/splunk_etc
+/splunk_var
