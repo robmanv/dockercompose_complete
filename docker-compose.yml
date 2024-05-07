@@ -35,7 +35,7 @@ services:
 
   db:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:9.6
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
@@ -43,7 +43,6 @@ services:
       - "5432:5432"
     volumes:
       - ./postgresql_data:/var/lib/postgresql/data
-
 
   dbmysql:
     container_name: mysql
@@ -295,7 +294,7 @@ services:
       - "8998:8998"
       - "8888:8888"
     volumes:
-      - C:\Users\Robson Vellasques\.aws:/home/glue_user/.aws
+      - ${USERPROFILE}\.aws:/home/glue_user/.aws
       - ./jupyter:/home/glue_user/workspace/jupyter_workspace/
       
       
